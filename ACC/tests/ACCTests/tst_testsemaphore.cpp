@@ -30,27 +30,41 @@ TestSemaphore::~TestSemaphore()
 }
 
 
-void foo(Semaphore* sem ) {
-    sem->P();
+void foo() {
+    Semaphore* sem1 = new Semaphore("s", 1);
+
+    for (int i = 0; i < 3; i++) {
+    sem1->P();
     printf("foo started\n");
-    Sleep(5000);
+
     printf("foo ended\n");
-    sem->V();
+    sem1->V();
+}
+    delete sem1;
 }
 
-void bar(Semaphore* sem ) {
-    sem->P();
+void bar() {
+    Semaphore* sem1 = new Semaphore("s", 1);
+
+     for (int i = 0; i < 3; i++) {
+    sem1->P();
+    sem1->V();
     printf("bar started\n");
+    Sleep(1000);
     printf("bar ended\n");
-    sem->V();
+     }
+
+    delete sem1;
+
 }
+
 void TestSemaphore::test_semaphore()
 {
     Semaphore* sem = new Semaphore("test", 1);
 
     //Semaphore* sem = new Semaphore("test", 1);
-    std::thread t1(foo, sem);
-    std::thread t2(bar, sem);
+    std::thread t1(foo);
+    std::thread t2(bar);
 
     t1.join();
     t2.join();

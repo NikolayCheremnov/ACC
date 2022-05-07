@@ -7,7 +7,10 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES +=  tst_testsemaphore.cpp \
-    ../../../ACC/core/semaphore.cpp
+    ../../../ACC/core/semaphore.cpp \
+    ../../../ACC/core/channel.cpp
 
 
-HEADERS += ../../../ACC/core/semaphore.h
+HEADERS += ../../../ACC/core/semaphore.h \
+    ../../../ACC/core/channel.h
+
