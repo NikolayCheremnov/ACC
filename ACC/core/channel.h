@@ -9,14 +9,15 @@
 template<class T>
 class Channel
 {
-private:
+protected:
     Semaphore* free;
     Semaphore* empty;
     HANDLE fileHMem;
     void* buffer;
+    int timeout;
 
 public:
-    Channel(std::string freeSemName, std::string emptySemName);
+    Channel(std::string freeSemName, std::string emptySemName, int timeout=INFINITE);
     ~Channel();
 
     // put/get
@@ -26,21 +27,28 @@ public:
         empty->V();
     }
 
-    T get() {
+    T get(bool& is_timeout) {
         T data;
-        empty->P();
-        CopyMemory(&data, (PVOID)buffer, sizeof(T));
-        free->V();
-        return data;
+        DWORD dwWaitResult = empty->P();
+
+        if (dwWaitResult == WAIT_OBJECT_0) {
+            is_timeout = false;
+            CopyMemory(&data, (PVOID)buffer, sizeof(T));
+            free->V();
+            return data;
+        } else {
+            is_timeout = true;
+        }
     }
 };
 
 template<class T>
-inline Channel<T>::Channel(std::string freeSemName, std::string emptySemName)
+inline Channel<T>::Channel(std::string freeSemName, std::string emptySemName, int timeout) :
+    timeout {timeout}
 {
     // 1. init semaphores
-    free = new Semaphore(freeSemName, 1);
-    empty = new Semaphore(emptySemName, 0);
+    free = new Semaphore(freeSemName, 1, timeout);
+    empty = new Semaphore(emptySemName, 0, timeout);
 
     // 2. init mapping file
     fileHMem = OpenFileMappingA(FILE_MAP_ALL_ACCESS, false, (emptySemName + "_" + freeSemName).c_str());
@@ -63,7 +71,7 @@ inline Channel<T>::~Channel()
 {
     delete free;
     delete empty;
-    delete buffer;
+    // delete buffer;
 }
 
 #endif // CHANNEL_H

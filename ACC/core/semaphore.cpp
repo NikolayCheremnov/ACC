@@ -1,7 +1,8 @@
 #include "semaphore.h"
 
 
-Semaphore::Semaphore(std::string name, int startState)
+Semaphore::Semaphore(std::string name, int startState, int timeout) :
+    timeout {timeout}
 {
     name = "Global" + name;
     HSEM = OpenSemaphoreA(SEMAPHORE_ALL_ACCESS, true, name.c_str());
@@ -15,9 +16,9 @@ Semaphore::~Semaphore()
     CloseHandle(HSEM);
 }
 
-void Semaphore::P()
+DWORD Semaphore::P()
 {
-    WaitForSingleObject(HSEM, INFINITE);
+    return WaitForSingleObject(HSEM, timeout);
 }
 
 void Semaphore::V()

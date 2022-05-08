@@ -8,13 +8,14 @@ class Semaphore
 {
 private:
     HANDLE HSEM;
+    int timeout;
 
 public:
-    Semaphore(std::string name, int startState);
+    Semaphore(std::string name, int startState, int timeout=INFINITE);
     ~Semaphore();
 
     // semaphore operations
-    void P();
+    DWORD P();
     void V();
 };
 

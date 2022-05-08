@@ -31,9 +31,9 @@ TestSemaphore::~TestSemaphore()
 
 
 void foo() {
-    Semaphore* sem1 = new Semaphore("s", 1);
+    Semaphore* sem1 = new Semaphore("s", 0);
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 1; i++) {
     sem1->P();
     printf("foo started\n");
 
@@ -44,9 +44,9 @@ void foo() {
 }
 
 void bar() {
-    Semaphore* sem1 = new Semaphore("s", 1);
+    Semaphore* sem1 = new Semaphore("s", 0);
 
-     for (int i = 0; i < 3; i++) {
+     for (int i = 0; i < 1; i++) {
     sem1->P();
     sem1->V();
     printf("bar started\n");
@@ -60,9 +60,6 @@ void bar() {
 
 void TestSemaphore::test_semaphore()
 {
-    Semaphore* sem = new Semaphore("test", 1);
-
-    //Semaphore* sem = new Semaphore("test", 1);
     std::thread t1(foo);
     std::thread t2(bar);
 
@@ -70,6 +67,7 @@ void TestSemaphore::test_semaphore()
     t2.join();
 }
 
-QTEST_APPLESS_MAIN(TestSemaphore)
+// QTEST_APPLESS_MAIN(TestSemaphore)
+
 
 #include "tst_testsemaphore.moc"

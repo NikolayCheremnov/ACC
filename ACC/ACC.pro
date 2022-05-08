@@ -9,8 +9,13 @@ CONFIG -= app_bundle
 
 SOURCES += \
         core/channel.cpp \
+        core/runnable.cpp \
         core/semaphore.cpp \
-        main.cpp
+        entities/driver.cpp \
+        main.cpp \
+        structures/accparams.cpp \
+        structures/constants.cpp \
+        utils/utils.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -19,4 +24,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     core/channel.h \
-    core/semaphore.h
+    core/runnable.h \
+    core/semaphore.h \
+    entities/driver.h \
+    structures/accparams.h \
+    structures/constants.h \
+    utils/utils.h

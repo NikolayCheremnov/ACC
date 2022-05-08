@@ -8,7 +8,9 @@ TEMPLATE = app
 
 SOURCES +=  tst_testsemaphore.cpp \
     ../../../ACC/core/semaphore.cpp \
-    ../../../ACC/core/channel.cpp
+    ../../../ACC/core/channel.cpp \
+    tst_testchannel.cpp \
+    tst_testentities.cpp
 
 
 HEADERS += ../../../ACC/core/semaphore.h \
