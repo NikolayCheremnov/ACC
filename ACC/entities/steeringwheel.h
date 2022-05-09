@@ -1,5 +1,5 @@
-#ifndef DRIVER_H
-#define DRIVER_H
+#ifndef STEERINGWHEEL_H
+#define STEERINGWHEEL_H
 
 
 #include "../core/runnable.h"
@@ -8,23 +8,17 @@
 #include "../structures/constants.h"
 #include "../structures/accparams.h"
 
-#include "../utils/utils.h"
 
-
-
-class Driver : public Runnable
+class SteeringWheel : public Runnable
 {
-private:
     Channel<ACCParams>* params_ch;
     Semaphore* turn_on_sem;
     Semaphore* turn_off_sem;
-
 public:
-    Driver(std::string name="Driver");
-    ~Driver();
+    SteeringWheel(std::string name="SteeringWheel");
+    ~SteeringWheel();
 
     void run() override;
-
 };
 
-#endif // DRIVER_H
+#endif // STEERINGWHEEL_H

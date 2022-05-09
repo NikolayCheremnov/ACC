@@ -12,6 +12,7 @@ SOURCES += \
         core/runnable.cpp \
         core/semaphore.cpp \
         entities/driver.cpp \
+        entities/steeringwheel.cpp \
         main.cpp \
         structures/accparams.cpp \
         structures/constants.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     core/runnable.h \
     core/semaphore.h \
     entities/driver.h \
+    entities/steeringwheel.h \
     structures/accparams.h \
     structures/constants.h \
     utils/utils.h
