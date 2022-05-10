@@ -35,10 +35,10 @@ public:
             is_timeout = false;
             CopyMemory(&data, (PVOID)buffer, sizeof(T));
             free->V();
-            return data;
         } else {
             is_timeout = true;
         }
+        return data;
     }
 };
 

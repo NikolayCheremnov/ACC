@@ -11,10 +11,17 @@ SOURCES += \
         core/channel.cpp \
         core/runnable.cpp \
         core/semaphore.cpp \
+        entities/automobile.cpp \
+        entities/brake.cpp \
         entities/driver.cpp \
+        entities/engine.cpp \
+        entities/roadobject.cpp \
+        entities/sensor.cpp \
+        entities/speedometer.cpp \
         entities/steeringwheel.cpp \
         main.cpp \
         structures/accparams.cpp \
+        structures/accstate.cpp \
         structures/constants.cpp \
         utils/utils.cpp
 
@@ -27,8 +34,15 @@ HEADERS += \
     core/channel.h \
     core/runnable.h \
     core/semaphore.h \
+    entities/automobile.h \
+    entities/brake.h \
     entities/driver.h \
+    entities/engine.h \
+    entities/roadobject.h \
+    entities/sensor.h \
+    entities/speedometer.h \
     entities/steeringwheel.h \
     structures/accparams.h \
+    structures/accstate.h \
     structures/constants.h \
     utils/utils.h

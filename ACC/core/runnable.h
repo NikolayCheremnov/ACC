@@ -21,6 +21,7 @@ private:
 
 public:
     Runnable(std::string objectName, std::ostream& out = std::cout);
+    virtual ~Runnable() {}
 
     virtual void run() = 0;
 

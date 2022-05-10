@@ -16,6 +16,8 @@ Driver::~Driver()
     delete params_ch;
     delete turn_on_sem;
     delete turn_off_sem;
+
+    log(name(), "Object destroyed");
 }
 
 void Driver::run()

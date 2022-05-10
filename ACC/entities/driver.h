@@ -21,7 +21,7 @@ private:
 
 public:
     Driver(std::string name="Driver");
-    ~Driver();
+    ~Driver() override;
 
     void run() override;
 

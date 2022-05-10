@@ -17,6 +17,21 @@ public:
     static std::string ACC_TURN_ON_SEM;
     static std::string ACC_TURN_OFF_SEM;
 
+    // Wheel-automobile channel names and timeout
+    static std::string ACC_STATE_CHNAME_FREE;
+    static std::string ACC_STATE_CHNAME_EMPTY;
+    static int ACC_STATE_CHTIMEOUT_MS;
+
+    // Automobile-engine channel names
+    static std::string AUTOMOBILE_ENGINE_CHNAME_FREE;
+    static std::string AUTOMOBILE_ENGINE_CHNAME_EMPTY;
+
+    // Automobile-speedometer channel names and timeout
+    static std::string AUTOMOBILE_SPEEDOMETER_CHNAME_FREE;
+    static std::string AUTOMOBILE_SPEEDOMETER_CHNAME_EMPTY;
+    static int AUTOMOBILE_SPEEDOEMETER_CHTIMEOUT_MS;
+
+
 };
 
 #endif // CONSTANTS_H
