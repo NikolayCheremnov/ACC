@@ -31,6 +31,14 @@ public:
     static std::string AUTOMOBILE_SPEEDOMETER_CHNAME_EMPTY;
     static int AUTOMOBILE_SPEEDOEMETER_CHTIMEOUT_MS;
 
+    // Automobile-sensor channel names and timeout
+    static std::string AUTOMOBILE_SENSOR_CHNAME_FREE;
+    static std::string AUTOMOBILE_SENSOR_CHNAME_EMPTY;
+    static int AUTOMOBILE_SENSOR_CHTIMEOUT_MS;
+
+    // Automobile-brake channel names
+    static std::string AUTOMOBILE_BRAKE_CHNAME_FREE;
+    static std::string AUTOMOBILE_BRAKE_CHNAME_EMPTY;
 
 };
 

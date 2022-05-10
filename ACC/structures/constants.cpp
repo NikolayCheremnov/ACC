@@ -26,3 +26,15 @@ std::string Constants::AUTOMOBILE_ENGINE_CHNAME_EMPTY = "AutomobileEngineEmpty";
 std::string Constants::AUTOMOBILE_SPEEDOMETER_CHNAME_FREE = "AutomobileSpeedometerFree";
 std::string Constants::AUTOMOBILE_SPEEDOMETER_CHNAME_EMPTY = "AutomobileSpeedometerEmpty";
 int Constants::AUTOMOBILE_SPEEDOEMETER_CHTIMEOUT_MS = 100;
+
+
+// Automobile-sensor channel names and timeout
+std::string Constants::AUTOMOBILE_SENSOR_CHNAME_FREE = "AutomobileSensorFree";
+std::string Constants::AUTOMOBILE_SENSOR_CHNAME_EMPTY = "AutomobileSensorEmpty";
+int Constants::AUTOMOBILE_SENSOR_CHTIMEOUT_MS = 100;
+
+
+// Automobile-brake channel names
+std::string Constants::AUTOMOBILE_BRAKE_CHNAME_FREE = "AutomobileBrakeFree";
+std::string Constants::AUTOMOBILE_BRAKE_CHNAME_EMPTY = "AutomobileBrakeEmpty";
+

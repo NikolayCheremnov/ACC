@@ -23,6 +23,7 @@ SOURCES += \
         structures/accparams.cpp \
         structures/accstate.cpp \
         structures/constants.cpp \
+        structures/sensordata.cpp \
         utils/utils.cpp
 
 # Default rules for deployment.
@@ -45,4 +46,5 @@ HEADERS += \
     structures/accparams.h \
     structures/accstate.h \
     structures/constants.h \
+    structures/sensordata.h \
     utils/utils.h

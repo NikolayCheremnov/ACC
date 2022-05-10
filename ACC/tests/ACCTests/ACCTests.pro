@@ -11,8 +11,10 @@ SOURCES +=  ../../../ACC/core/semaphore.cpp \
     ../../../ACC/core/runnable.cpp \
     ../../../ACC/entities/driver.cpp \
     ../../../ACC/entities/steeringwheel.cpp \
+    ../../../ACC/entities/automobile.cpp \
     ../../structures/accparams.cpp \
     ../../structures/constants.cpp \
+    ../../structures/sensordata.cpp \
     ../../../ACC/utils/utils.cpp \
     tst_testsemaphore.cpp \
     tst_testchannel.cpp \
@@ -24,7 +26,9 @@ HEADERS += ../../../ACC/core/semaphore.h \
     ../../../ACC/core/runnable.h \
     ../../../ACC/entities/driver.h \
     ../../../ACC/entities/steeringwheel.h \
+    ../../../ACC/entities/automobile.h \
     ../../structures/accparams.h \
     ../../structures/constants.h \
+    ../../structures/sensordata.h \
     ../../utils/utils.h
 
