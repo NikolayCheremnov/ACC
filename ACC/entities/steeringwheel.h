@@ -4,6 +4,7 @@
 
 #include "../core/runnable.h"
 #include "../core/channel.h"
+#include "../core/semaphore.h"
 
 #include "../structures/constants.h"
 #include "../structures/accparams.h"
@@ -20,6 +21,8 @@ class SteeringWheel : public Runnable
     // Automobile-wheel channel
     Channel<ACCStateParams>* ACC_state_ch;
 
+    // Termination semaphore
+    Semaphore* termination_timeout_sem;
 
 public:
     SteeringWheel(std::string name="SteeringWheel");

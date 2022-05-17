@@ -12,8 +12,8 @@
 class Engine : public Runnable
 {
 private:
-    // Automobile - engine channel
-    Channel<ACCState>* automobile_ch;
+    Channel<ACCStateParams>* automobile_engine_ch;
+    Channel<ACCStateParams>* speedometer_engine_ch;
 
 public:
     Engine(std::string name="Engine");

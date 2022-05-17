@@ -12,6 +12,11 @@ SOURCES +=  ../../../ACC/core/semaphore.cpp \
     ../../../ACC/entities/driver.cpp \
     ../../../ACC/entities/steeringwheel.cpp \
     ../../../ACC/entities/automobile.cpp \
+    ../../../ACC/entities/speedometer.cpp \
+    ../../../ACC/entities/engine.cpp \
+    ../../../ACC/entities/brake.cpp \
+    ../../../ACC/entities/sensor.cpp \
+    ../../../ACC/entities/roadobject.cpp \
     ../../structures/accparams.cpp \
     ../../structures/constants.cpp \
     ../../structures/sensordata.cpp \
@@ -27,6 +32,11 @@ HEADERS += ../../../ACC/core/semaphore.h \
     ../../../ACC/entities/driver.h \
     ../../../ACC/entities/steeringwheel.h \
     ../../../ACC/entities/automobile.h \
+    ../../../ACC/entities/speedometer.h \
+    ../../../ACC/entities/engine.h \
+    ../../../ACC/entities/brake.h \
+    ../../../ACC/entities/sensor.h \
+    ../../../ACC/entities/roadobject.h \
     ../../structures/accparams.h \
     ../../structures/constants.h \
     ../../structures/sensordata.h \

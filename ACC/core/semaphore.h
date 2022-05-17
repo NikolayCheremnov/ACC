@@ -16,6 +16,7 @@ public:
 
     // semaphore operations
     DWORD P();
+    DWORD P(bool& is_timeout);
     void V();
 };
 

@@ -1,6 +1,8 @@
 #ifndef AUTOMOBILE_H
 #define AUTOMOBILE_H
 
+#include <vector>
+
 #include "../core/runnable.h"
 #include "../core/channel.h"
 
@@ -27,6 +29,12 @@ private:
 
     // Automobile-brake semaphore
     Channel<ACCStateParams>* automobile_brake_ch;
+
+    // System semaphores
+    std::vector<Semaphore*> system_termination_semaphores;
+
+    // brake semaphore
+    Semaphore* automobile_brake_sem;
 
 public:
     Automobile(std::string name="Automobile");

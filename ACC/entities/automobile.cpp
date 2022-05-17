@@ -24,9 +24,19 @@ Automobile::Automobile(std::string name) :
                                                            Constants::AUTOMOBILE_SENSOR_CHNAME_EMPTY,
                                                            Constants::AUTOMOBILE_SENSOR_CHTIMEOUT_MS);
 
-    // 5. brake semphore
+    // 5. brake channel and semaphore
     automobile_brake_ch = new Channel<ACCStateParams>(Constants::AUTOMOBILE_BRAKE_CHNAME_FREE,
                                                       Constants::AUTOMOBILE_BRAKE_CHNAME_EMPTY);
+    automobile_brake_sem = new Semaphore(Constants::AUTOMOBILE_BRAKE_SEMNAME, 1);
+
+    // 6. termination semaphores
+    system_termination_semaphores.push_back(new Semaphore(Constants::DRIVER_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS));
+    system_termination_semaphores.push_back(new Semaphore(Constants::STEERINGWHEEL_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS));
+    system_termination_semaphores.push_back(new Semaphore(Constants::ROADOBJECT_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS));
+    system_termination_semaphores.push_back(new Semaphore(Constants::SENSOR_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS));
+    system_termination_semaphores.push_back(new Semaphore(Constants::BRAKE_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS));
+    system_termination_semaphores.push_back(new Semaphore(Constants::ENGINE_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS));
+    system_termination_semaphores.push_back(new Semaphore(Constants::SPEEDOMETER_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS));
 
 
     log(this->name(), "Object created");
@@ -40,6 +50,10 @@ Automobile::~Automobile()
     delete automobile_speedometer_timeout_ch;
     delete automobile_sensor_timeout_ch;
     delete automobile_brake_ch;
+    delete automobile_brake_sem;
+
+    for (auto termination_sem : system_termination_semaphores)
+        delete termination_sem;
 
     log(name(), "Object destroyed");
 }
@@ -53,15 +67,21 @@ void Automobile::run()
     bool is_timeout;
     log(name(), "Object is waiting to receive ACC control");
     ACCStateParams acc_state = ACC_state_ch->get(is_timeout);
+
+    // help variables
     int required_speed = acc_state.params.speed;
+    SensorState prev_sensor_state = SensorState::NORMAL;
 
     // 3. ACC control - main loop
     log(name(), "Driving has been switched to ACC. Automobile cycle started.");
-    bool is_stop = false;
-    while (!is_stop) {
+
+    while (acc_state.state != ACCState::OFF) {
+
         // 1. send info to engine
-        automobile_engine_ch->put(acc_state);
-        log(name(), "Speed adjusting sended to engine. Speed = " + std::to_string(acc_state.params.speed));
+        if (prev_sensor_state != SensorState::CRITICAL_BARRIER) {
+            automobile_engine_ch->put(acc_state);
+            log(name(), "Speed adjusting sended to engine. Required speed = " + std::to_string(acc_state.params.speed));
+        }
 
         // 2. receive data from speedometer
         log(name(), "Reading speedometer data");
@@ -84,7 +104,7 @@ void Automobile::run()
         // 4. receive data from wheel
         log(name(), "Reading steeringwheel data");
         bool is_wheel_timeout;
-        acc_state = ACC_state_timeout_ch->get(is_wheel_timeout);
+        ACCStateParams wheelData = ACC_state_timeout_ch->get(is_wheel_timeout);
         if (is_wheel_timeout)
             log(name(), "No steeringwheel data");
         else
@@ -92,34 +112,66 @@ void Automobile::run()
 
 
         // 5. process results:
-        //      - emergency braking - high priority
+        //      - braking - high priority
         //      - ACC turned off - next priority
         //      - next itreration - low priority
 
 
-        // 5.0. full stop
         if (!is_speedometer_timeout && speedometerData.params.speed == 0) {
-            log(name(), "Full stop. Object's work cycle is completed");
-            is_stop = true;
+            // 0) - full stop
+            log(name(), "Full stop (speed == 0). Object's work cycle is completed");
+            acc_state.state = ACCState::OFF;
         }
-        // 5.1. emergency braking - high priority
-        else if (!is_sensor_timeout && sensorData.state == SensorState::CRITICAL_BARRIER) {
+        else if (!is_sensor_timeout && sensorData.state == SensorState::BARRIER) {
+            // 1) - barrier
+            log(name(), "Data on a barrier has been received (distance = " + std::to_string(sensorData.distance) + "). " +
+                "Reduction in speed is requested");
+            acc_state.params.speed = required_speed * 0.8;  // to reduce speed
+        }
+        else if ((!is_sensor_timeout && sensorData.state == SensorState::CRITICAL_BARRIER) ||
+                 (is_sensor_timeout && prev_sensor_state == SensorState::CRITICAL_BARRIER)) {
+            // 2) - critical barrier
             log(name(), "Data on a critical barrier has been received (distance = " + std::to_string(sensorData.distance) + "). " +
-                "Emergency braking call");
-            acc_state.params.speed = speedometerData.params.speed; // to stop
-            acc_state.state = ACCState::ABORTED;
-            automobile_brake_ch->put(acc_state);
+                "Braking is requested");
+            prev_sensor_state = SensorState::CRITICAL_BARRIER;
+            speedometerData = automobile_speedometer_timeout_ch->get(is_speedometer_timeout);   // read last actual speed
+            if (speedometerData.params.speed == 0) {
+                // full stop
+                log(name(), "Full stop (speed == 0). Object's work cycle is completed");
+                acc_state.state = ACCState::OFF;
+            } else {
+                acc_state.params.speed = speedometerData.params.speed;  // real speed
+                automobile_brake_sem->P();              // lock semaphore
+                automobile_brake_ch->put(acc_state);    // braking
+                log(name(), "Waiting braking");
+                automobile_brake_sem->P();              // waiting end brake cycle
+                automobile_brake_sem->V();              // release sem
+                log(name(), "Braking cycle completed");
+            }
+        } else if (!is_sensor_timeout && sensorData.state == SensorState::NORMAL && prev_sensor_state == SensorState::CRITICAL_BARRIER) {
+            // 3) - critical barrier has been overcome
+            log(name(), "Сritical barrier has been overcome. Working next.");
+            acc_state.params.speed = required_speed;
+            prev_sensor_state = SensorState::NORMAL;
         }
-        // 5.2. ACC turned off
-        else if (acc_state.state == ACCState::OFF) {
+        else if (wheelData.state == ACCState::OFF) {
+            // 4) - acc turned off
             log(name(), "ACC turned off by driver. Object's work cycle is completed");
-            automobile_brake_ch->put(acc_state);
-            is_stop = true;
-        }
-        // 5.3. else next iteration
+            acc_state.state = ACCState::OFF;
+        } 
         else {
-            acc_state.state = ACCState::ON;
+            // 5) next iteration
+            log(name(), "Maintaining standard speed = " + std::to_string(required_speed));
             acc_state.params.speed = required_speed;
         }
     }
+
+    // shut down components
+    // 1 - shut diwn waiting compnents
+    automobile_brake_ch->put(acc_state);
+    automobile_engine_ch->put(acc_state);
+
+    // 2 - end of cycle - send termination signals
+    for (auto termination_sem : system_termination_semaphores)
+        termination_sem->V();
 }

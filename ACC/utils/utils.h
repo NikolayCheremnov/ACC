@@ -3,10 +3,12 @@
 
 
 #include <random>
+#include <time.h>
+#include <thread>
 #include <Windows.h>
 
 
-int rand_in_range(int min, int max);
+// int rand_in_range(int min, int max);
 
 bool get_console_text_color(short &ret);
 #endif // UTILS_H

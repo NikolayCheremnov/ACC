@@ -36,10 +36,45 @@ public:
     static std::string AUTOMOBILE_SENSOR_CHNAME_EMPTY;
     static int AUTOMOBILE_SENSOR_CHTIMEOUT_MS;
 
-    // Automobile-brake channel names
+    // Automobile-brake channel names and semaphore name
     static std::string AUTOMOBILE_BRAKE_CHNAME_FREE;
     static std::string AUTOMOBILE_BRAKE_CHNAME_EMPTY;
+    static std::string AUTOMOBILE_BRAKE_SEMNAME;
 
+    // Speedometer-engine channel names and timeout
+    static std::string SPEEDOMETER_ENGINE_CHNAME_FREE;
+    static std::string SPEEDOMETER_ENGINE_CHNAME_EMPTY;
+    static int SPEEDOMETER_ENGINE_CHTIMEOUT_MS;
+
+    // Speedometer-brake channel names and timeout
+    static std::string SPEEDOMETER_BRAKE_CHNAME_FREE;
+    static std::string SPEEDOMETER_BRAKE_CHNAME_EMPTY;
+    static int SPEEDOMETER_BRAKE_CHTIMEOUT_MS;
+
+    // Sensor-object channel names
+    static std::string SENSOR_OBJECT_CHNAME_FREE;
+    static std::string SENSOR_OBJECT_CHNAME_EMPTY;
+
+    // Termination semaphores names and timeout
+    static std::string DRIVER_TERMINATION_SEMNAME;
+    static std::string STEERINGWHEEL_TERMINATION_SEMNAME;
+    static std::string ROADOBJECT_TERMINATION_SEMNAME;
+    static std::string SENSOR_TERMINATION_SEMNAME;
+    static std::string BRAKE_TERMINATION_SEMNAME;
+    static std::string ENGINE_TERMINATION_SEMNAME;
+    static std::string SPEEDOMETER_TERMINATION_SEMNAME;
+    static int TERMINATION_SEMTIMEOUT_MS;
+
+    // plug constants
+    static int ACC_MODE_PREWORKING_DURATION_MS;
+    static int ACC_MODE_WORKING_DURATION_MS;
+    static int ACC_MODE_SPEED_RANGE_MS[2];
+
+    static int BRAKING_INTERVAL_MS;
+    static double BRAKING_ACCELERATION;
+    static double CRITICAL_DISTANCE;
+    static int BARRIER_WEIGHTS[3];
+    static int ROADOBJECT_INTERVAL_RANGE_MS[2];
 };
 
 #endif // CONSTANTS_H

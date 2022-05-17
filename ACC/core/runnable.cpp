@@ -5,6 +5,17 @@ Runnable::Runnable(std::string name, std::ostream& out) : objectName{name}, out 
     logSem = new Semaphore("logger", 1);
     color = nextColor;
     nextColor = (nextColor + 1) % 16;
+
+    // random generator
+    std::random_device rd;
+    generator = new std::mt19937(rd());
+    //srand(time(0));
+
+}
+
+Runnable::~Runnable()
+{
+    delete generator;
 }
 
 void Runnable::log(std::string srs, std::string msg)
@@ -36,9 +47,14 @@ std::string &Runnable::name()
     return objectName;
 }
 
+int Runnable::rand_in_range(int min, int max)
+{
+    return (*generator)() % (max + 1 - min) + min;
+}
+
 void run(Runnable *entity)
 {
     entity->run();
 }
 
-int Runnable::nextColor = 1;
+int Runnable::nextColor = 2;

@@ -11,6 +11,9 @@ SteeringWheel::SteeringWheel(std::string name) :
     // Automobile-wheel channel
     ACC_state_ch = new Channel<ACCStateParams>(Constants::ACC_STATE_CHNAME_FREE, Constants::ACC_STATE_CHNAME_EMPTY);
 
+    // termination sem
+    termination_timeout_sem = new Semaphore(Constants::STEERINGWHEEL_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS);
+
     log(this->name(), "Object created");
 }
 
@@ -20,6 +23,7 @@ SteeringWheel::~SteeringWheel()
     delete turn_on_sem;
     delete turn_off_sem;
     delete ACC_state_ch;
+    delete termination_timeout_sem;
 
     log(name(), "Object destroyed");
 }
@@ -40,15 +44,25 @@ void SteeringWheel::run()
     log(name(), "ACC mode is active. On-board computer is being initialized");
     ACCStateParams state{ACCState::ON, params};
     ACC_state_ch->put(state);
-    log(name(), "ACC state sended to automobile (on-board computer). Waiting ACC mode deativation.");
+    log(name(), "ACC state sended to automobile (on-board computer). Waiting ACC mode deactivation.");
 
     // 4. waiting an ACC was stopped
     turn_off_sem->P();
-    log(name(), "ACC mode is deactivated. Notification of the on-board computer.");
-    ACCStateParams terminate_state{ACCState::OFF, ACCParams{0}};
-    ACC_state_ch->put(terminate_state);
-    log(name(), "ACC state sended to automobile (on-board computer)");
 
-    // 5. exit
-    log(name(), "Object's work cycle is completed");
+    // check system termination
+    termination_timeout_sem->P(is_timeout);
+    if (!is_timeout) {
+        // system was terminated
+        log(name(), "ACC system stopped. Control deactivated. Object cycle completed.");
+        return;
+    } else {
+        // system was stopped normal
+        log(name(), "ACC mode is deactivated. Notification of the on-board computer.");
+        ACCStateParams terminate_state{ACCState::OFF, ACCParams{0}};
+        ACC_state_ch->put(terminate_state);
+        log(name(), "ACC state sended to automobile (on-board computer)");
+
+        // 5. exit
+        log(name(), "Object's work cycle is completed");
+    }
 }

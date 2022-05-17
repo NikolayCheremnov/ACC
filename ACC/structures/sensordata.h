@@ -8,7 +8,8 @@
 enum class SensorState {
     NORMAL,
     BARRIER,
-    CRITICAL_BARRIER
+    CRITICAL_BARRIER,
+    STOPPED
 };
 
 struct SensorData {

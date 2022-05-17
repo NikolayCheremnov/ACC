@@ -21,6 +21,18 @@ DWORD Semaphore::P()
     return WaitForSingleObject(HSEM, timeout);
 }
 
+DWORD Semaphore::P(bool &is_timeout)
+{
+    DWORD dwWaitResult = P();
+
+    if (dwWaitResult == WAIT_OBJECT_0) {
+        is_timeout = false;
+    } else {
+        is_timeout = true;
+    }
+    return dwWaitResult;
+}
+
 void Semaphore::V()
 {
     ReleaseSemaphore(HSEM, 1, NULL);
