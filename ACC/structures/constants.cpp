@@ -66,8 +66,8 @@ std::string Constants::SPEEDOMETER_TERMINATION_SEMNAME = "SpeedometerTermination
 int Constants::TERMINATION_SEMTIMEOUT_MS = 100;
 
 // plug constants
-int Constants::ACC_MODE_PREWORKING_DURATION_MS = 3000;
-int Constants::ACC_MODE_WORKING_DURATION_MS = 10000;
+int Constants::ACC_MODE_PREWORKING_DURATION_MS = 1000;
+int Constants::ACC_MODE_WORKING_DURATION_MS = 5000;
 int Constants::ACC_MODE_SPEED_RANGE_MS[2]{50, 110};
 
 int Constants::BRAKING_INTERVAL_MS = 1000;
