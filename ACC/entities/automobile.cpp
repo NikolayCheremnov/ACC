@@ -24,10 +24,11 @@ Automobile::Automobile(std::string name) :
                                                            Constants::AUTOMOBILE_SENSOR_CHNAME_EMPTY,
                                                            Constants::AUTOMOBILE_SENSOR_CHTIMEOUT_MS);
 
-    // 5. brake channel and semaphore
+    // 5. brake channel and semaphores
     automobile_brake_ch = new Channel<ACCStateParams>(Constants::AUTOMOBILE_BRAKE_CHNAME_FREE,
                                                       Constants::AUTOMOBILE_BRAKE_CHNAME_EMPTY);
-    automobile_brake_sem = new Semaphore(Constants::AUTOMOBILE_BRAKE_SEMNAME, 1);
+    automobile_brake_timeout_sem = new Semaphore(Constants::AUTOMOBILE_BRAKE_SEMNAME, 1, Constants::AUTOMOBILE_BRAKE_SEMTIMEOUT_MS);
+    automobile_brake_stop_timeout_sem = new Semaphore(Constants::AUTOMOBILE_BRAKE_STOP_SEM_NAME, 0, Constants::AUTOMOBILE_BRAKE_STOP_SEMTIMEOUT_MS);
 
     // 6. termination semaphores
     system_termination_semaphores.push_back(new Semaphore(Constants::DRIVER_TERMINATION_SEMNAME, 0, Constants::TERMINATION_SEMTIMEOUT_MS));
@@ -50,7 +51,8 @@ Automobile::~Automobile()
     delete automobile_speedometer_timeout_ch;
     delete automobile_sensor_timeout_ch;
     delete automobile_brake_ch;
-    delete automobile_brake_sem;
+    delete automobile_brake_timeout_sem;
+    delete automobile_brake_stop_timeout_sem;
 
     for (auto termination_sem : system_termination_semaphores)
         delete termination_sem;
@@ -141,18 +143,21 @@ void Automobile::run()
                 acc_state.state = ACCState::OFF;
             } else {
                 acc_state.params.speed = speedometerData.params.speed;  // real speed
-                automobile_brake_sem->P();              // lock semaphore
-                automobile_brake_ch->put(acc_state);    // braking
-                log(name(), "Waiting braking");
-                automobile_brake_sem->P();              // waiting end brake cycle
-                automobile_brake_sem->V();              // release sem
-                log(name(), "Braking cycle completed");
+                bool is_brake_sem_timeout;
+                automobile_brake_timeout_sem->P(is_brake_sem_timeout);  // wait braking
+                if (is_brake_sem_timeout) {
+                    log(name(), "Brake already start braking cycle. Braking passed");
+                } else {
+                    automobile_brake_ch->put(acc_state);    // braking
+                    log(name(), "Brake request sended");
+                }
             }
         } else if (!is_sensor_timeout && sensorData.state == SensorState::NORMAL && prev_sensor_state == SensorState::CRITICAL_BARRIER) {
             // 3) - critical barrier has been overcome
             log(name(), "Сritical barrier has been overcome. Working next.");
             acc_state.params.speed = required_speed;
             prev_sensor_state = SensorState::NORMAL;
+            automobile_brake_stop_timeout_sem->V();
         }
         else if (wheelData.state == ACCState::OFF) {
             // 4) - acc turned off

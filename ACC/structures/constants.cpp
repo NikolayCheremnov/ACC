@@ -38,6 +38,9 @@ int Constants::AUTOMOBILE_SENSOR_CHTIMEOUT_MS = 100;
 std::string Constants::AUTOMOBILE_BRAKE_CHNAME_FREE = "AutomobileBrakeFree";
 std::string Constants::AUTOMOBILE_BRAKE_CHNAME_EMPTY = "AutomobileBrakeEmpty";
 std::string Constants::AUTOMOBILE_BRAKE_SEMNAME = "AutomobileBrakeSemaphore";
+std::string Constants::AUTOMOBILE_BRAKE_STOP_SEM_NAME = "AutomobileBrakeStopSemaphore";
+int Constants::AUTOMOBILE_BRAKE_SEMTIMEOUT_MS = 100;
+int Constants::AUTOMOBILE_BRAKE_STOP_SEMTIMEOUT_MS = 10;
 
 
 // Speedometer-engine channel names
@@ -67,11 +70,12 @@ int Constants::TERMINATION_SEMTIMEOUT_MS = 100;
 
 // plug constants
 int Constants::ACC_MODE_PREWORKING_DURATION_MS = 1000;
-int Constants::ACC_MODE_WORKING_DURATION_MS = 5000;
-int Constants::ACC_MODE_SPEED_RANGE_MS[2]{50, 110};
+int Constants::ACC_MODE_WORKING_DURATION_MS = 15000;
+int Constants::ACC_MODE_SPEED_RANGE_MS[2]{50, 100};
 
-int Constants::BRAKING_INTERVAL_MS = 1000;
-double Constants::BRAKING_ACCELERATION = 36;
+int Constants::BREAKING_DURATION_MS = 1000;
+int Constants::BRAKING_INTERVAL_MS = 10;
+double Constants::BRAKING_ACCELERATION_MSS = 10;
 double Constants::CRITICAL_DISTANCE = 50;
-int Constants::BARRIER_WEIGHTS[3]{0, 50, 100};
-int Constants::ROADOBJECT_INTERVAL_RANGE_MS[2]{2 * 1000, 5 * 1000};
+int Constants::BARRIER_WEIGHTS[3]{30, 50, 100};
+int Constants::ROADOBJECT_INTERVAL_RANGE_MS[2]{5 * 1000, 10 * 1000};

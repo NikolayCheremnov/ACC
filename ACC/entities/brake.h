@@ -14,7 +14,8 @@ class Brake : public Runnable
 private:
     Channel<ACCStateParams>* automobile_brake_ch;
     Channel<ACCStateParams>* speedometer_brake_timeout_ch;
-    Semaphore* automobile_brake_sem;
+    Semaphore* automobile_brake_timeout_sem;
+    Semaphore* automobile_brake_stop_timeout_sem;
 
 public:
     Brake(std::string name="Brake");

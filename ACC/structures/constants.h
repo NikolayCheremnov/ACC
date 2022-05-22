@@ -40,6 +40,9 @@ public:
     static std::string AUTOMOBILE_BRAKE_CHNAME_FREE;
     static std::string AUTOMOBILE_BRAKE_CHNAME_EMPTY;
     static std::string AUTOMOBILE_BRAKE_SEMNAME;
+    static int AUTOMOBILE_BRAKE_SEMTIMEOUT_MS;
+    static std::string AUTOMOBILE_BRAKE_STOP_SEM_NAME;
+    static int AUTOMOBILE_BRAKE_STOP_SEMTIMEOUT_MS;
 
     // Speedometer-engine channel names and timeout
     static std::string SPEEDOMETER_ENGINE_CHNAME_FREE;
@@ -70,8 +73,9 @@ public:
     static int ACC_MODE_WORKING_DURATION_MS;
     static int ACC_MODE_SPEED_RANGE_MS[2];
 
+    static int BREAKING_DURATION_MS;
     static int BRAKING_INTERVAL_MS;
-    static double BRAKING_ACCELERATION;
+    static double BRAKING_ACCELERATION_MSS;
     static double CRITICAL_DISTANCE;
     static int BARRIER_WEIGHTS[3];
     static int ROADOBJECT_INTERVAL_RANGE_MS[2];

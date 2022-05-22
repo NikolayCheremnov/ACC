@@ -33,8 +33,9 @@ private:
     // System semaphores
     std::vector<Semaphore*> system_termination_semaphores;
 
-    // brake semaphore
-    Semaphore* automobile_brake_sem;
+    // brake semaphores
+    Semaphore* automobile_brake_timeout_sem;
+    Semaphore* automobile_brake_stop_timeout_sem;
 
 public:
     Automobile(std::string name="Automobile");
