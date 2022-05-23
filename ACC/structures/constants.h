@@ -79,6 +79,9 @@ public:
     static double CRITICAL_DISTANCE;
     static int BARRIER_WEIGHTS[3];
     static int ROADOBJECT_INTERVAL_RANGE_MS[2];
+
+    static size_t SENSOR_SYSTEM_QUEUE_MAX_SIZE;
+    static int SENSORS_COUNT;
 };
 
 #endif // CONSTANTS_H

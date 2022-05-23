@@ -79,3 +79,6 @@ double Constants::BRAKING_ACCELERATION_MSS = 10;
 double Constants::CRITICAL_DISTANCE = 50;
 int Constants::BARRIER_WEIGHTS[3]{30, 50, 100};
 int Constants::ROADOBJECT_INTERVAL_RANGE_MS[2]{5 * 1000, 10 * 1000};
+
+size_t Constants::SENSOR_SYSTEM_QUEUE_MAX_SIZE = 100;
+int Constants::SENSORS_COUNT = 10;

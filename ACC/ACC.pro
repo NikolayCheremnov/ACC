@@ -17,6 +17,7 @@ SOURCES += \
         entities/engine.cpp \
         entities/roadobject.cpp \
         entities/sensor.cpp \
+        entities/sensorsystem.cpp \
         entities/speedometer.cpp \
         entities/steeringwheel.cpp \
         main.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     entities/engine.h \
     entities/roadobject.h \
     entities/sensor.h \
+    entities/sensorsystem.h \
     entities/speedometer.h \
     entities/steeringwheel.h \
     structures/accparams.h \

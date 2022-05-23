@@ -17,6 +17,7 @@ SOURCES +=  ../../../ACC/core/semaphore.cpp \
     ../../../ACC/entities/brake.cpp \
     ../../../ACC/entities/sensor.cpp \
     ../../../ACC/entities/roadobject.cpp \
+    ../../../ACC/entities/sensorsystem.cpp \
     ../../structures/accparams.cpp \
     ../../structures/constants.cpp \
     ../../structures/sensordata.cpp \
@@ -37,6 +38,7 @@ HEADERS += ../../../ACC/core/semaphore.h \
     ../../../ACC/entities/brake.h \
     ../../../ACC/entities/sensor.h \
     ../../../ACC/entities/roadobject.h \
+    ../../../ACC/entities/sensorsystem.h \
     ../../structures/accparams.h \
     ../../structures/constants.h \
     ../../structures/sensordata.h \

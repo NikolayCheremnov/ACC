@@ -58,6 +58,7 @@ inline Channel<T>::Channel(std::string freeSemName, std::string emptySemName, in
     }
 
     // 3. make mapping
+    // buffer = MapViewOfFile(fileHMem, FILE_MAP_ALL_ACCESS, 0, 0, 4096);
     if (fileHMem) {
         buffer = MapViewOfFile(fileHMem, FILE_MAP_ALL_ACCESS, 0, 0, 4096);
     }
